@@ -12,10 +12,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
         
-      - name: Setup Firebase
+      - name: Prepare Project Structure
         run: |
+          mkdir -p lib
+          mv main.dart lib/main.dart || true
           mkdir -p android/app/
           cp google-services.json android/app/google-services.json
-          
+        
       - name: Build APK
         run: flutter build apk --release
