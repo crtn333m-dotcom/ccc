@@ -1,40 +1,21 @@
-name: Build Haway APK
+name: Build APK
 
-on:
-  push:
-    branches: [ main ]
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Create Clean Project
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+      
+      - name: Install dependencies
+        run: flutter pub get
+        
+      - name: Setup Firebase
         run: |
-          flutter create --project-name haway_app --overwrite .
-          mkdir -p lib
-          cp main.dart lib/main.dart
-
-      - name: Build APK (Release Mode)
-        run: |
-          flutter pub get
-          flutter build apk --release --no-tree-shake-icons
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: haway-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          mkdir -p android/app/
+          cp google-services.json android/app/google-services.json
+          
+      - name: Build APK
+        run: flutter build apk --release
