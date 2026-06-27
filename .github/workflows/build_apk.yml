@@ -9,23 +9,31 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
       
-      - name: Install dependencies
-        run: flutter pub get
-        
-      - name: Build Setup
+      - name: Create Clean Project
         run: |
-          # تجهيز هيكل المشروع
-          rm -rf android/
+          # 1. إنشاء مشروع جديد كلياً
+          flutter create new_app
+          cd new_app
+          
+          # 2. نقل ملفاتك إلى المشروع الجديد
+          rm -rf lib/
           mkdir -p lib
-          mv main.dart lib/main.dart || true
-          flutter create --project-name haway_app .
+          cp -r ../lib/* lib/ || true
+          cp ../pubspec.yaml .
           
-          # فرض إصدار SDK 34 في ملف gradle
-          echo "android { compileSdk = 34 }" >> android/app/build.gradle
-          
-          # نسخ ملف الإعدادات
+          # 3. إعداد Firebase
           mkdir -p android/app/
-          cp google-services.json android/app/google-services.json
-        
-      - name: Build APK
-        run: flutter build apk --release
+          cp ../google-services.json android/app/google-services.json
+          
+          # 4. تثبيت المكتبات والبناء
+          flutter pub get
+          flutter build apk --release
+          
+          # 5. نقل ملف الـ APK الناتج للمجلد الرئيسي
+          cp build/app/outputs/flutter-apk/app-release.apk ../app-release.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: app-release.apk
