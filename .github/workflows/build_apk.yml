@@ -11,7 +11,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
@@ -22,17 +22,21 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Base Flutter Structure
+      - name: Create Clean Flutter Project
         run: |
-          flutter create --overwrite .
-          mkdir -p lib
-          cp main.dart lib/main.dart
+          # إنشاء مشروع نظيف لتفادي تعارض الملفات الافتراضية
+          flutter create haway_app
+          # استبدال ملف الكود الافتراضي بكود تطبيق هواي الخاص بك
+          cp main.dart haway_app/lib/main.dart
 
-      - name: Build APK (Release Mode)
-        run: flutter build apk --release --no-tree-shake-icons
+      - name: Build APK
+        run: |
+          cd haway_app
+          flutter pub get
+          flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: haway-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: haway_app/build/app/outputs/flutter-apk/app-release.apk
