@@ -22,16 +22,14 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Clean Flutter Project
+      - name: Create Clean Project
         run: |
-          # إنشاء مشروع جديد مستقل لتجنب تعارض نسخ أندرويد الافتراضية
-          flutter create haway_project
-          # نقل ملف الـ main.dart الخاص بك إلى المجلد الجديد
-          cp main.dart haway_project/lib/main.dart
+          flutter create --project-name haway_app --overwrite .
+          mkdir -p lib
+          cp main.dart lib/main.dart
 
       - name: Build APK (Release Mode)
         run: |
-          cd haway_project
           flutter pub get
           flutter build apk --release --no-tree-shake-icons
 
@@ -39,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: haway-release-apk
-          path: haway_project/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
