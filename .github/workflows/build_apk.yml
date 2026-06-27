@@ -14,18 +14,25 @@ jobs:
         with:
           flutter-version: '3.22.0'
       
-      - name: Prepare and Build
+      - name: Build and Configure
         run: |
           # 1. تثبيت الحزم
           flutter pub get
           
-          # 2. تجهيز ملف Firebase (يجب أن يكون موجوداً في المجلد الرئيسي)
+          # 2. إنشاء مشروع أندرويد جديد لضمان توافق الملفات
+          flutter create .
+          
+          # 3. فرض نسخة SDK 34 في ملف build.gradle
+          # نستخدم echo لإضافة الإعداد مباشرة للسطر الذي يحدده Flutter
+          echo "android { compileSdk = 34 }" >> android/app/build.gradle
+          
+          # 4. نسخ ملف Firebase
           mkdir -p android/app/
           cp google-services.json android/app/google-services.json
           
-          # 3. البناء
+          # 5. البناء
           flutter build apk --release
-          
+      
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
