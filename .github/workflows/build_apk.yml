@@ -14,8 +14,14 @@ jobs:
         
       - name: Prepare Project Structure
         run: |
+          # مسح ملفات الأندرويد القديمة إذا وُجدت
+          rm -rf android/
+          # إنشاء هيكلية المشروع
           mkdir -p lib
           mv main.dart lib/main.dart || true
+          # إعادة إنشاء ملفات الأندرويد بنظام v2 الحديث
+          flutter create --project-name haway_app .
+          # وضع ملف الإعدادات في مكانه الصحيح
           mkdir -p android/app/
           cp google-services.json android/app/google-services.json
         
