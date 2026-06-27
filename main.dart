@@ -1,36 +1,60 @@
-name: Build Haway APK
+import 'package:flutter/material.dart';
 
-on:
-  push:
-    branches: [ main ]
+void main() {
+  runApp(const HawayApp());
+}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+class HawayApp extends StatelessWidget {
+  const HawayApp({super.key});
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'هواي',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF0F172A), // خلفية داكنة احترافية
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF2563EB),
+          brightness: Brightness.dark,
+        ),
+      ),
+      home: const Directionality(
+        textDirection: TextDirection.rtl, // دعم الواجهة العربية من اليمين لليسار
+        child: LoginScreen(),
+      ),
+    );
+  }
+}
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
+// 1. شاشة تسجيل الدخول المحدثة بالكامل للعربية
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
-      - name: Create Base Flutter Structure
-        run: |
-          flutter create --overwrite .
-          cp main.dart lib/main.dart
-
-      - name: Build APK
-        run: flutter build apk --release
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: haway-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Spacer(),
+              // شعار التطبيق الفخم
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2563EB),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF2563EB).withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      )
+                    ],
+                  ),
+                  child: const Icon(Icons.chat_bubble_rounded, size
