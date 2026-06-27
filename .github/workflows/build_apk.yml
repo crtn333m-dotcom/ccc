@@ -6,34 +6,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
       
-      - name: Create Clean Project
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+      
+      - name: Prepare and Build
         run: |
-          # 1. إنشاء مشروع جديد كلياً
-          flutter create new_app
-          cd new_app
-          
-          # 2. نقل ملفاتك إلى المشروع الجديد
-          rm -rf lib/
-          mkdir -p lib
-          cp -r ../lib/* lib/ || true
-          cp ../pubspec.yaml .
-          
-          # 3. إعداد Firebase
-          mkdir -p android/app/
-          cp ../google-services.json android/app/google-services.json
-          
-          # 4. تثبيت المكتبات والبناء
+          # 1. تثبيت الحزم
           flutter pub get
+          
+          # 2. تجهيز ملف Firebase (يجب أن يكون موجوداً في المجلد الرئيسي)
+          mkdir -p android/app/
+          cp google-services.json android/app/google-services.json
+          
+          # 3. البناء
           flutter build apk --release
           
-          # 5. نقل ملف الـ APK الناتج للمجلد الرئيسي
-          cp build/app/outputs/flutter-apk/app-release.apk ../app-release.apk
-
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
