@@ -11,11 +11,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Set up Java 11 (النسخة المتوافقة)
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '11'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -28,10 +28,12 @@ jobs:
           mkdir -p lib
           cp main.dart lib/main.dart
 
-      - name: Fetch Dependencies
-        run: flutter pub get
+      - name: Clean and Get Packages
+        run: |
+          flutter pub get
+          flutter clean
 
-      - name: Build APK
+      - name: Build APK (Release Mode)
         run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK Artifact
