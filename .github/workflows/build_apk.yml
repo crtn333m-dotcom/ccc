@@ -20,7 +20,7 @@ jobs:
           flutter pub get
           
           # 2. إنشاء مشروع أندرويد جديد لضمان توافق الملفات
-          flutter create .
+          # flutter create .
           
           # 3. فرض نسخة SDK 34 في ملف build.gradle
           # نستخدم echo لإضافة الإعداد مباشرة للسطر الذي يحدده Flutter
