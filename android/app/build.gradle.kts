@@ -1,39 +1,21 @@
-plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services")
-}
-
-android {
-    namespace = "com.example.haway_app"
-    compileSdk = 34
-    ndkVersion = "25.1.8937393"
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    defaultConfig {
-        applicationId = "com.example.haway_app"
-        minSdk = 23
-        targetSdk = 34
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-    }
-
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
-        }
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
     }
 }
 
-flutter {
-    source = "../.."
+val newBuildDir: File = rootProject.layout.buildDirectory.dir("../../build").get().asFile
+rootProject.layout.buildDirectory.set(newBuildDir)
+
+subprojects {
+    val newSubprojectBuildDir: File = newBuildDir.resolve(project.name)
+    project.layout.buildDirectory.set(newSubprojectBuildDir)
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
 }
