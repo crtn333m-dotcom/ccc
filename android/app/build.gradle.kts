@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace = "com.example.your_app_name"
+    namespace = "com.example.haway_app"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
@@ -41,19 +41,4 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.your_app_name"
-        minSdk = 21
-        targetSdk = 34
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
-    }
-
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.debug
-        }
-    }
-}
-
-flutter {
-    source = "../.."
+        application
