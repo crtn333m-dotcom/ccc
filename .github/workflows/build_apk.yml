@@ -24,15 +24,17 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
+      - name: Generate android folder
+        run: flutter create --platforms android .
+
       - name: Write google-services.json
         run: |
-          mkdir -p android/app
           echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
 
       - name: Fix minSdkVersion
         run: |
-          sed -i 's/minSdkVersion 21/minSdkVersion 23/g' android/app/build.gradle
           sed -i 's/minSdk 21/minSdk 23/g' android/app/build.gradle
+          sed -i 's/minSdkVersion 21/minSdkVersion 23/g' android/app/build.gradle
 
       - name: Install dependencies
         run: flutter pub get
