@@ -27,14 +27,10 @@ jobs:
       - name: Generate android folder
         run: flutter create --platforms android .
 
-      - name: Show and Fix minSdkVersion
+      - name: Fix minSdkVersion
         run: |
-          echo "=== قبل التعديل ==="
-          cat android/app/build.gradle
           sed -i 's/minSdk = 21/minSdk = 23/g' android/app/build.gradle
           sed -i 's/minSdk 21/minSdk 23/g' android/app/build.gradle
-          echo "=== بعد التعديل ==="
-          cat android/app/build.gradle
 
       - name: Write google-services.json
         run: |
@@ -44,7 +40,7 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --dart-define=flutter.minSdkVersion=23
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
