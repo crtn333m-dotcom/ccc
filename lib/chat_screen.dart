@@ -32,7 +32,6 @@ class _ChatScreenState extends State<ChatScreen> {
     final db = FirebaseFirestore.instance;
     final now = FieldValue.serverTimestamp();
 
-    // إضافة الرسالة
     await db
         .collection('chats')
         .doc(widget.chatId)
@@ -44,13 +43,11 @@ class _ChatScreenState extends State<ChatScreen> {
       'createdAt': now,
     });
 
-    // تحديث آخر رسالة في المحادثة
     await db.collection('chats').doc(widget.chatId).update({
       'lastMessage': text,
       'lastMessageTime': now,
     });
 
-    // التمرير للأسفل
     await Future.delayed(const Duration(milliseconds: 100));
     if (_scrollCtrl.hasClients) {
       _scrollCtrl.animateTo(
@@ -92,7 +89,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
-          // قائمة الرسائل
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
@@ -129,11 +125,8 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-
-          // حقل الإرسال
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
