@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Fix Android v1 embedding
+        run: flutter create --platforms android .
+
       - name: Build APK
         run: flutter build apk --release
 
