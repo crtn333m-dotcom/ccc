@@ -1,18 +1,9 @@
 android {
-    namespace = "com.example.haway_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+    namespace = "your.package.name"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.haway_app"
-        minSdkVersion 21
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 21
+        targetSdk = 34
     }
 }
