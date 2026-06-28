@@ -29,9 +29,7 @@ jobs:
 
       - name: Fix minSdkVersion
         run: |
-          find android -name "*.gradle" -o -name "*.gradle.kts" | xargs ls -la
-          find android -name "*.gradle" | xargs sed -i 's/minSdk 21/minSdk 23/g'
-          find android -name "*.gradle.kts" | xargs sed -i 's/minSdk = 21/minSdk = 23/g'
+          sed -i 's/minSdk 21/minSdk 23/g' android/app/build.gradle
 
       - name: Write google-services.json
         run: |
