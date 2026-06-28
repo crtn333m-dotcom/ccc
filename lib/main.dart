@@ -13,21 +13,20 @@ class HawayApp extends StatelessWidget {
       title: 'هواي',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0F172A), // خلفية داكنة احترافية
+        scaffoldBackgroundColor: const Color(0xFF0F172A),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF2563EB),
           brightness: Brightness.dark,
         ),
       ),
       home: const Directionality(
-        textDirection: TextDirection.rtl, // دعم الواجهة العربية من اليمين لليسار
+        textDirection: TextDirection.rtl,
         child: LoginScreen(),
       ),
     );
   }
 }
 
-// 1. شاشة تسجيل الدخول المحدثة بالكامل للعربية
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -42,7 +41,6 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(),
-              // شعار التطبيق الفخم
               Center(
                 child: Container(
                   padding: const EdgeInsets.all(16),
@@ -57,4 +55,19 @@ class LoginScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  child: const Icon(Icons.chat_bubble_rounded, size
+                  child: const Icon(Icons.chat_bubble_rounded, size: 64, color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 32),
+              const Text(
+                'أهلاً بك في تطبيق هواي',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
