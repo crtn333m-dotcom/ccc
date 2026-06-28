@@ -10,11 +10,9 @@ android {
 
     defaultConfig {
         applicationId = "com.example.haway_app"
-        // التعديل الضروري هنا:
         minSdkVersion 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
-    // ... باقي الكود
 }
