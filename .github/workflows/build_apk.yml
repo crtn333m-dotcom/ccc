@@ -16,16 +16,17 @@ jobs:
           flutter-version: '3.32.0'
           channel: 'stable'
       
-      - name: Recreate android folder
+      - name: Backup and regenerate android folder
         run: |
-          cp -r lib /tmp/lib_backup
-          cp pubspec.yaml /tmp/pubspec_backup.yaml
-          cp -r assets /tmp/assets_backup 2>/dev/null || true
           cp android/app/google-services.json /tmp/google-services.json
-          
+          rm -rf android
           flutter create --org com.example --project-name ccc .
-          
           cp /tmp/google-services.json android/app/google-services.json
+      
+      - name: Add Firebase to build.gradle.kts
+        run: |
+          sed -i 's/id("com.android.application")/id("com.android.application")\n    id("com.google.gms.google-services")/' android/app/build.gradle.kts
+          sed -i 's/id("com.android.application") version/id("com.google.gms.google-services") version "4.4.1" apply false\n    id("com.android.application") version/' android/build.gradle.kts
       
       - name: Build APK
         run: |
