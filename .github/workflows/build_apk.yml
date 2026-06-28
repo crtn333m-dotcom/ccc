@@ -29,11 +29,13 @@ jobs:
           mkdir -p android/app
           echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
 
+      - name: Fix minSdkVersion
+        run: |
+          sed -i 's/minSdkVersion 21/minSdkVersion 23/g' android/app/build.gradle
+          sed -i 's/minSdk 21/minSdk 23/g' android/app/build.gradle
+
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Fix Android v1 embedding
-        run: flutter create --platforms android .
 
       - name: Build APK
         run: flutter build apk --release
