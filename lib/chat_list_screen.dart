@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'chat_screen.dart';
 
 class ChatListScreen extends StatelessWidget {
@@ -15,14 +14,13 @@ class ChatListScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('محادثة جديدة', style: GoogleFonts.cairo(fontWeight: FontWeight.bold)),
+        title: const Text('محادثة جديدة',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         content: TextField(
           controller: nameCtrl,
           textDirection: TextDirection.rtl,
-          style: GoogleFonts.cairo(),
           decoration: InputDecoration(
             hintText: 'ابحث بالاسم...',
-            hintStyle: GoogleFonts.cairo(),
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -30,19 +28,19 @@ class ChatListScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('إلغاء', style: GoogleFonts.cairo()),
+            child: const Text('إلغاء'),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF6C63FF),
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () async {
               final name = nameCtrl.text.trim();
               if (name.isEmpty) return;
 
-              // البحث بالاسم في Firestore
               final query = await FirebaseFirestore.instance
                   .collection('users')
                   .where('name', isGreaterThanOrEqualTo: name)
@@ -58,23 +56,22 @@ class ChatListScreen extends StatelessWidget {
 
               if (results.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('لم يُعثر على مستخدم بهذا الاسم',
-                        style: GoogleFonts.cairo()),
+                  const SnackBar(
+                    content: Text('لم يُعثر على مستخدم بهذا الاسم'),
                     backgroundColor: Colors.red,
                   ),
                 );
                 return;
               }
 
-              // إذا وجد أكثر من نتيجة، اعرضهم للاختيار
               if (results.length == 1) {
-                _openOrCreateChat(context, currentUser, results.first.data());
+                _openOrCreateChat(context, currentUser,
+                    results.first.data() as Map<String, dynamic>);
               } else {
                 _showUserPicker(context, currentUser, results);
               }
             },
-            child: Text('بحث', style: GoogleFonts.cairo()),
+            child: const Text('بحث'),
           ),
         ],
       ),
@@ -90,11 +87,10 @@ class ChatListScreen extends StatelessWidget {
       builder: (ctx) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
+          const Padding(
+            padding: EdgeInsets.all(16),
             child: Text('اختر المستخدم',
-                style: GoogleFonts.cairo(
-                    fontSize: 16, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ),
           ...results.map((doc) {
             final data = doc.data() as Map<String, dynamic>;
@@ -106,8 +102,9 @@ class ChatListScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-              title: Text(data['name'], style: GoogleFonts.cairo()),
-              subtitle: Text(data['email'], style: GoogleFonts.cairo(fontSize: 12)),
+              title: Text(data['name']),
+              subtitle: Text(data['email'],
+                  style: const TextStyle(fontSize: 12)),
               onTap: () {
                 Navigator.pop(ctx);
                 _openOrCreateChat(context, currentUser, data);
@@ -126,7 +123,6 @@ class ChatListScreen extends StatelessWidget {
     final myUid = currentUser.uid;
     final otherUid = otherUser['uid'] as String;
 
-    // البحث عن محادثة موجودة بين المستخدمين
     final existing = await db
         .collection('chats')
         .where('participants', arrayContains: myUid)
@@ -141,7 +137,6 @@ class ChatListScreen extends StatelessWidget {
       }
     }
 
-    // إنشاء محادثة جديدة إذا لم توجد
     if (chatId == null) {
       final ref = await db.collection('chats').add({
         'participants': [myUid, otherUid],
@@ -177,13 +172,12 @@ class ChatListScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF6C63FF),
         foregroundColor: Colors.white,
-        title: Text('المحادثات',
-            style: GoogleFonts.cairo(fontWeight: FontWeight.bold)),
+        title: const Text('المحادثات',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () => FirebaseAuth.instance.signOut(),
-            tooltip: 'تسجيل الخروج',
           ),
         ],
       ),
@@ -201,19 +195,18 @@ class ChatListScreen extends StatelessWidget {
           final chats = snapshot.data?.docs ?? [];
 
           if (chats.isEmpty) {
-            return Center(
+            return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.chat_bubble_outline,
+                  Icon(Icons.chat_bubble_outline,
                       size: 80, color: Color(0xFFD0CEFF)),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Text('لا توجد محادثات بعد',
-                      style: GoogleFonts.cairo(
-                          fontSize: 18, color: Colors.grey)),
-                  const SizedBox(height: 8),
+                      style: TextStyle(fontSize: 18, color: Colors.grey)),
+                  SizedBox(height: 8),
                   Text('ابدأ محادثة جديدة بالضغط على +',
-                      style: GoogleFonts.cairo(color: Colors.grey)),
+                      style: TextStyle(color: Colors.grey)),
                 ],
               ),
             );
@@ -221,7 +214,7 @@ class ChatListScreen extends StatelessWidget {
 
           return ListView.separated(
             itemCount: chats.length,
-            separatorBuilder: (, _) =>
+            separatorBuilder: (_, __) =>
                 const Divider(height: 1, indent: 72),
             itemBuilder: (context, index) {
               final chat = chats[index].data() as Map<String, dynamic>;
@@ -235,8 +228,8 @@ class ChatListScreen extends StatelessWidget {
               final time = chat['lastMessageTime'] as Timestamp?;
 
               return ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 8),
                 leading: CircleAvatar(
                   radius: 26,
                   backgroundColor: const Color(0xFF6C63FF),
@@ -249,20 +242,17 @@ class ChatListScreen extends StatelessWidget {
                   ),
                 ),
                 title: Text(otherName,
-                    style: GoogleFonts.cairo(fontWeight: FontWeight.w600)),
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
                 subtitle: Text(
                   lastMsg.isEmpty ? 'ابدأ المحادثة...' : lastMsg,
-                  style: GoogleFonts.cairo(
-                      color: Colors.grey, fontSize: 13),
+                  style: const TextStyle(color: Colors.grey, fontSize: 13),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: time != null
-                    ? Text(
-                        _formatTime(time.toDate()),
-                        style: GoogleFonts.cairo(
-                            fontSize: 11, color: Colors.grey),
-                      )
+                    ? Text(_formatTime(time.toDate()),
+                        style: const TextStyle(
+                            fontSize: 11, color: Colors.grey))
                     : null,
                 onTap: () => Navigator.push(
                   context,
