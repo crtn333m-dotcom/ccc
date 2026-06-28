@@ -27,17 +27,19 @@ jobs:
       
       - name: Add Firebase plugins
         run: |
-          # أضف plugin في android/build.gradle.kts
           cat >> android/build.gradle.kts << 'EOF'
           
           buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
               dependencies {
                   classpath("com.google.gms:google-services:4.4.1")
               }
           }
           EOF
           
-          # أضف apply plugin في android/app/build.gradle.kts
           echo "" >> android/app/build.gradle.kts
           echo 'apply(plugin = "com.google.gms.google-services")' >> android/app/build.gradle.kts
       
