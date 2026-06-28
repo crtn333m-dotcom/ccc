@@ -1,18 +1,26 @@
+name: Build APK
 
-name: haway_app
-description: "A new Flutter project."
-publish_to: 'none'
-version: 1.0.0+2
+on: [push]
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
 
-dependencies:
-  flutter:
-    sdk: flutter
-  firebase_core: ^2.24.2
-  cloud_firestore: ^4.14.0
-  firebase_auth: ^4.16.0
-
-flutter:
-  uses-material-design: true
+      - name: Build and Configure
+        run: |
+          flutter pub get
+          # تثبيت أداة توليد الأيقونات
+          flutter pub add flutter_launcher_icons
+          # بناء التطبيق
+          flutter build apk --release --build-name=1.0.0 --build-number=1
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
