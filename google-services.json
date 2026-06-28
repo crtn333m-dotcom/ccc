@@ -1,8 +1,0 @@
-      - name: Prepare Project Structure
-        run: |
-          mkdir -p lib
-          mv main.dart lib/main.dart || true
-          mkdir -p android/app/
-          cp google-services.json android/app/google-services.json
-          # إنشاء مشروع جديد لتحديث إعدادات الأندرويد
-          flutter create --project-name haway_app --overwrite .
