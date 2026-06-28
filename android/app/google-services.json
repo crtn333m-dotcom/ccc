@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "217035558445",
+    "project_id": "hawaychatapp",
+    "storage_bucket": "hawaychatapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217035558445:android:cbdd7f26c0369cc92572a4",
+        "android_client_info": {
+          "package_name": "com.example.hawaychatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1WDG0vTi1B-h1o7VuXkrDguOuCmvTwTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
