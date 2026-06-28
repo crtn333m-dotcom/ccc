@@ -27,9 +27,14 @@ jobs:
       - name: Generate android folder
         run: flutter create --platforms android .
 
-      - name: Fix minSdkVersion
+      - name: Show and Fix minSdkVersion
         run: |
+          echo "=== قبل التعديل ==="
+          cat android/app/build.gradle
+          sed -i 's/minSdk = 21/minSdk = 23/g' android/app/build.gradle
           sed -i 's/minSdk 21/minSdk 23/g' android/app/build.gradle
+          echo "=== بعد التعديل ==="
+          cat android/app/build.gradle
 
       - name: Write google-services.json
         run: |
