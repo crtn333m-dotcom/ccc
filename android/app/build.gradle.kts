@@ -1,9 +1,3 @@
-android {
-    namespace = "your.package.name"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 34
-    }
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
