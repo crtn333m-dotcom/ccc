@@ -43,10 +43,11 @@ jobs:
           echo "" >> android/app/build.gradle.kts
           echo 'apply(plugin = "com.google.gms.google-services")' >> android/app/build.gradle.kts
       
+      - name: Get dependencies
+        run: flutter pub get
+      
       - name: Build APK
-        run: |
-          flutter pub get
-          flutter build apk --release
+        run: flutter build apk --release --pub
       
       - name: Upload APK
         uses: actions/upload-artifact@v4
